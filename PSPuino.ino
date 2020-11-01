@@ -1,173 +1,130 @@
-#include "U8glib.h"
-
-U8GLIB_SH1106_128X64 u8g(12, 11, 9, 10); // SCK = 12, MOSI = 11, CS = 10, A0 = 9
+#include "Game.h"
 
 //  Define Control Button Pins
 #define DOWN_BUTTON 2
 #define RIGHT_BUTTON 4
 #define LEFT_BUTTON 3
 #define UP_BUTTON 13
-#define A_BUTTON 8
-#define B_BUTTON 5
+#define A_BUTTON 5
+#define B_BUTTON 8
 
-//== Game Variables ==
-u8g_uint_t courtWidth, courtHeight; // How wide and tall is our screen?
+// Init screen
+SCREEN screen(12, 11, 9, 10); // SCK = 12, MOSI = 11, CS = 10, A0 = 9
 
-typedef struct rectangle {
-  u8g_uint_t xSize;
-  u8g_uint_t ySize;
-  u8g_uint_t x;
-  u8g_uint_t y;
-  u8g_uint_t xDirection;
-  u8g_uint_t yDirection;
-  bool show;
-} rectangle;
+// Init game
+Game game(screen, 20);
 
-rectangle ball;
-rectangle paddle;
-rectangle brick;
 
-unsigned long timeToMove; // Is it time to move the ball?
-int animationSpeed = 20;
-int gameOver = 0;
+// Declare Global Game Variables
+Sprite ball;
+Sprite paddle;
+Sprite brick;
 
-void drawGame(rectangle rectangles[]) {
-  for (int i=0; i<3; i++) {
-    if (rectangles[i].show) u8g.drawBox(rectangles[i].x, rectangles[i].y, rectangles[i].xSize, rectangles[i].ySize);
+void drawGame() {
+  for (int i = 0; i < 3; i++) {
+    if (game.sprites[i].show) game.sprites[i].draw(screen);
   }
-  //  u8g.drawBox(paddle.x, paddle.y, paddle.xSize, paddle.ySize);
-}
-
-void drawGameOver() {
-  // graphic commands to redraw the complete screen should be placed here
-  u8g.setFont(u8g_font_unifont);
-  
-  //u8g.setFont(u8g_font_osb21);
-  u8g.drawStr( 0, 22, "GAME OVER!");
-  u8g.drawStr( 0, 42, "A to restart");
 }
 
 void setupGame() {
-  ball = {
-    .xSize = 4,
-    .ySize = 4,
-    .x = 0,
-    .y = 0,
-    .xDirection = 1,
-    .yDirection = 1,
-    .show = true
-  };
   
-  paddle = {
-    .xSize = 16,
-    .ySize = 2,
-    .x = courtWidth / 2 - 16/ 2,
-    .y = courtHeight - 2,
-    .xDirection = 1,
-    .yDirection = 0,
-    .show = true
-  };
-  
-  brick = {
-    .xSize = 12,
-    .ySize = 6,
-    .x = courtWidth/4,
-    .y = courtHeight/4,
-    .xDirection = 0,
-    .yDirection = 0,
-    .show = true
-  };
-  
-  gameOver = 0;
-  
+  ball.xSize = 4;
+  ball.ySize = 4;
+  ball.x = 0;
+  ball.y = 0;
+  ball.xDirection = 1;
+  ball.yDirection = 1;
+  ball.show = true;
+
+  paddle.xSize = 16;
+  paddle.ySize = 2;
+  paddle.x = game.canvasWidth / 2 - 16 / 2;
+  paddle.y = game.canvasHeight - 2;
+  paddle.xDirection = 1;
+  paddle.yDirection = 0;
+  paddle.show = true;
+
+  brick.xSize = 12;
+  brick.ySize = 6;
+  brick.x = game.canvasWidth / 4;
+  brick.y = game.canvasHeight / 4;
+  brick.xDirection = 0;
+  brick.yDirection = 0;
+  brick.show = true;
+
+  game.addSprite(paddle);
+  game.addSprite(ball);
+  game.addSprite(brick);
+
+  game.gameOver = 0;
+
 }
 
-void moveBall() {
-  // millis is how long since we power up the Arduino.
-  ball.x += ball.xDirection;
-  if (ball.x >= (courtWidth - ball.xSize) || ball.x <= 0) ball.xDirection = -ball.xDirection;
-  ball.y += ball.yDirection;
-  if (ball.y <= 0) ball.yDirection = -ball.yDirection;
-  if (ball.y >= (courtHeight - ball.ySize)) {
-    if (ball.x >= paddle.x && ball.x <= paddle.x + paddle.xSize) ball.yDirection = -ball.yDirection;
-    else gameOver = 1;
-  }
-}
+//void moveBall() {
+//  ball.x += ball.xDirection;
+//  if (ball.x >= (game.canvasWidth - ball.xSize) || ball.x <= 0) ball.xDirection = -ball.xDirection;
+//  ball.y += ball.yDirection;
+//  if (ball.y <= 0) ball.yDirection = -ball.yDirection;
+//  if (ball.y >= (canvasHeight - ball.ySize)) {
+//    if (ball.x >= paddle.x && ball.x <= paddle.x + paddle.xSize) ball.yDirection = -ball.yDirection;
+//    else gameOver = 1;
+//  }
+//}
 
-void movePaddle() {
-  if(digitalRead(LEFT_BUTTON) == LOW && paddle.x > 0) {
-    paddle.x += -1.5;
-  }
-  if(digitalRead(RIGHT_BUTTON) == LOW && (paddle.x + paddle.xSize) < courtWidth) {
-    paddle.x += 1.5;
-  }
-}
+//void movePaddle() {
+//  if (digitalRead(LEFT_BUTTON) == LOW && paddle.x > 0) {
+//    paddle.x += -2;
+//  }
+//  if (digitalRead(RIGHT_BUTTON) == LOW && (paddle.x + paddle.xSize) < game.canvasWidth) {
+//    paddle.x += 2;
+//  }
+//}
 
-bool pointInRectangle(int x, int y, rectangle box) {
-  return (x >= box.x && x <= box.x + box.xSize && y >= box.y && y <= box.y + box.ySize);
-}
+//bool pointInSprite(int x, int y, Sprite box) {
+//  return (x >= box.x && x <= box.x + box.xSize && y >= box.y && y <= box.y + box.ySize);
+//}
 
-void checkCollisions() {
-  if 
-    (pointInRectangle(ball.x, ball.y, brick) || 
-    pointInRectangle(ball.x + ball.xSize, ball.y, brick) || 
-    pointInRectangle(ball.x + ball.xSize, ball.y + ball.ySize, brick) || 
-    pointInRectangle(ball.x, ball.y + ball.ySize, brick)) {
-      brick.show = false;
-      ball.yDirection = -ball.yDirection;
-    }
-}
-
-void animate() {
-  checkCollisions();
-  if (millis() > timeToMove) {
-    timeToMove = millis() + animationSpeed;// Set the next time we'll need to move the ball again.
-    movePaddle();
-    moveBall();
-  }
-}
+//void checkCollisions() {
+//  if
+//  (pointInSprite(ball.x, ball.y, brick) ||
+//      pointInSprite(ball.x + ball.xSize, ball.y, brick) ||
+//      pointInSprite(ball.x + ball.xSize, ball.y + ball.ySize, brick) ||
+//      pointInSprite(ball.x, ball.y + ball.ySize, brick)) {
+//    brick.show = false;
+//    ball.yDirection = -ball.yDirection;
+//  }
+//}
 
 void setup(void) {
 
-  // assign default color value
-  if ( u8g.getMode() == U8G_MODE_R3G3B2 ) {
-    u8g.setColorIndex(255); // white
-  }
-  else if ( u8g.getMode() == U8G_MODE_GRAY2BIT ) {
-    u8g.setColorIndex(3); // max intensity
-  }
-  else if ( u8g.getMode() == U8G_MODE_BW ) {
-    u8g.setColorIndex(1); // pixel on
-  }
-  else if ( u8g.getMode() == U8G_MODE_HICOLOR ) {
-    u8g.setHiColorByRGB(255,255,255);
-  }
+  // Assign default screen color value
+  if ( screen.getMode() == U8G_MODE_R3G3B2 ) screen.setColorIndex(255); // white
+  else if ( screen.getMode() == U8G_MODE_GRAY2BIT ) screen.setColorIndex(3); // max intensity
+  else if ( screen.getMode() == U8G_MODE_BW ) screen.setColorIndex(1); // pixel on
+  else if ( screen.getMode() == U8G_MODE_HICOLOR ) screen.setHiColorByRGB(255, 255, 255);
 
-  // setup control buttons as input pullups
+  // Setup control buttons as input pullups
   pinMode(DOWN_BUTTON, INPUT_PULLUP);
   pinMode(RIGHT_BUTTON, INPUT_PULLUP);
   pinMode(LEFT_BUTTON, INPUT_PULLUP);
   pinMode(UP_BUTTON, INPUT_PULLUP);
   pinMode(A_BUTTON, INPUT_PULLUP);
   pinMode(B_BUTTON, INPUT_PULLUP);
-  
-  
-  courtWidth = u8g.getWidth();
-  courtHeight =  u8g.getHeight();
+
   setupGame();
 }
 
+
 void loop(void) {
-  u8g.firstPage();
+  screen.firstPage();
   do {
-    rectangle sprites[] = {ball, brick, paddle};
-    if (gameOver) {
-      drawGameOver();
+    if (game.gameOver) {
+      game.drawGameOver(screen);
       if (digitalRead(A_BUTTON) == LOW) setupGame();
     }
     else {
-      drawGame(sprites);
-      animate();
+      game.draw(screen);
+      game.animate();
     }
-  } while ( u8g.nextPage() );
+  } while ( screen.nextPage() );
 }
