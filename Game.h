@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #define MAX_SPRITES 10
+#define MAX_PLAYERS 2
 
 class Game {
   public:
@@ -13,7 +14,6 @@ class Game {
     bool gameOver;
     u8g_uint_t canvasWidth;
     u8g_uint_t canvasHeight;
-    int _numSprites;
     Sprite sprites[MAX_SPRITES];
 
     Game(SCREEN screen, int animationSpeed);
@@ -21,15 +21,13 @@ class Game {
     void drawGameOver(SCREEN screen);
     void addSprite(Sprite sprite);
     void animate();
+    void checkCollisions();
+    void reset();
 
   private:
     int _animationSpeed;
     unsigned long _timeToMove; 
-    
-
-  public:
-
-
+    int _numSprites;
 };
 
 #endif

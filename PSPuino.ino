@@ -1,62 +1,40 @@
 #include "Game.h"
 
-//  Define Control Button Pins
-#define DOWN_BUTTON 2
-#define RIGHT_BUTTON 4
-#define LEFT_BUTTON 3
-#define UP_BUTTON 13
-#define A_BUTTON 5
-#define B_BUTTON 8
-
 // Init screen
 SCREEN screen(12, 11, 9, 10); // SCK = 12, MOSI = 11, CS = 10, A0 = 9
 
 // Init game
 Game game(screen, 20);
 
-
 // Declare Global Game Variables
-Sprite ball;
-Sprite paddle;
-Sprite brick;
-
-void drawGame() {
-  for (int i = 0; i < 3; i++) {
-    if (game.sprites[i].show) game.sprites[i].draw(screen);
-  }
-}
+Sprite ball(MOVE_INERTIA, COLLIDE_REBOUND);
+Sprite paddle(MOVE_CONTROL);
+Sprite brick(MOVE_INERTIA, COLLIDE_VANISH);
 
 void setupGame() {
   
   ball.xSize = 4;
   ball.ySize = 4;
-  ball.x = 0;
-  ball.y = 0;
   ball.xDirection = 1;
   ball.yDirection = 1;
-  ball.show = true;
+  ball._bounds.yMax.gameOver = true;
 
   paddle.xSize = 16;
   paddle.ySize = 2;
   paddle.x = game.canvasWidth / 2 - 16 / 2;
   paddle.y = game.canvasHeight - 2;
   paddle.xDirection = 1;
-  paddle.yDirection = 0;
-  paddle.show = true;
 
   brick.xSize = 12;
   brick.ySize = 6;
   brick.x = game.canvasWidth / 4;
   brick.y = game.canvasHeight / 4;
-  brick.xDirection = 0;
-  brick.yDirection = 0;
-  brick.show = true;
 
   game.addSprite(paddle);
   game.addSprite(ball);
   game.addSprite(brick);
 
-  game.gameOver = 0;
+  game.gameOver = false;
 
 }
 
@@ -120,7 +98,9 @@ void loop(void) {
   do {
     if (game.gameOver) {
       game.drawGameOver(screen);
-      if (digitalRead(A_BUTTON) == LOW) setupGame();
+      if (digitalRead(A_BUTTON) == LOW) {
+        setupGame();
+      }
     }
     else {
       game.draw(screen);
