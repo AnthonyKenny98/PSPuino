@@ -1,29 +1,31 @@
 #include "Sprite.h"
 
-Sprite::Sprite(int moveMode, int collideMode) {
+Sprite::Sprite(state_t initialState, bounds_t bounds, int moveMode, int collideMode) {
     
-    xSize = 1;
-    ySize = 1;
-    x = 0;
-    y = 0;
-    setDefaultLimits();
-    xDirection = 0;
-    yDirection = 0;
-    show = true;
+    xSize = initialState.xSize;
+    ySize = initialState.ySize;
+    x = initialState.x;
+    y = initialState.y;
+    xDirection = initialState.xDirection;
+    yDirection = initialState.yDirection;
+    show = initialState.show;
+
+    _bounds = bounds;
     _moveMode = moveMode;
     _collideMode = collideMode;
+    _initialState = initialState;
 }
 
-void Sprite::setDefaultLimits() {
-    _bounds.xMin.limit = 0;
-    _bounds.xMax.limit = 1;
-    _bounds.yMin.limit = 0;
-    _bounds.yMax.limit = 1;
-    _bounds.xMin.gameOver = false;
-    _bounds.xMax.gameOver = false;
-    _bounds.yMin.gameOver = false;
-    _bounds.yMax.gameOver = false;
-}
+// void Sprite::setDefaultLimits() {
+//     _bounds.xMin.limit = 0;
+//     _bounds.xMax.limit = 1;
+//     _bounds.yMin.limit = 0;
+//     _bounds.yMax.limit = 1;
+//     _bounds.xMin.gameOver = false;
+//     _bounds.xMax.gameOver = false;
+//     _bounds.yMin.gameOver = false;
+//     _bounds.yMax.gameOver = false;
+// }
 
 void Sprite::draw(SCREEN screen) {
     screen.drawBox(x, y, xSize, ySize);
@@ -34,28 +36,15 @@ void Sprite::collide(Sprite obstacle) {
     bool xCollision = false;
     bool yCollision = false;
 
-    // Determine collision
-    // if (x == obstacle.x || x == obstacle.x + obstacle.xSize
-    //     || x + xSize == obstacle.x || x + xSize == obstacle.x + obstacle.xSize) {
-    //     if (y >= obstacle.y && y <= obstacle.y + obstacle.ySize) xCollision = true;
-    // }
-    // if (y == obstacle.y || y == obstacle.y + obstacle.ySize
-    //     || y + ySize == obstacle.y || y + ySize == obstacle.y + obstacle.ySize) {
-    //     if (x >= obstacle.x && x <= obstacle.x + obstacle.xSize) yCollision = true;
-    // }
-    if ((x + xSize == obstacle.x ||
-        x == obstacle.x + obstacle.xSize) &&
-        (y + ySize >= obstacle.y &&
-        y <= obstacle.y + obstacle.ySize)) {
+    // D
+    if ((x + xSize == obstacle.x || x == obstacle.x + obstacle.xSize) && // If either x side collides with obstacle
+        (y + ySize >= obstacle.y && y <= obstacle.y + obstacle.ySize)) { // and is within y range
         xCollision = true;
     }
-    if ((y + ySize == obstacle.y ||
-        y == obstacle.y + obstacle.ySize) &&
-        (x + xSize >= obstacle.x &&
-        x <= obstacle.x + obstacle.xSize)) {
+    if ((y + ySize == obstacle.y || y == obstacle.y + obstacle.ySize) && // If either x side collides with obstacle
+        (x + xSize >= obstacle.x && x <= obstacle.x + obstacle.xSize)) { // and is within y range
         yCollision = true;
     }
-
 
     // Act on collision
     if (_collideMode == COLLIDE_VANISH && (xCollision || yCollision)) {
@@ -96,4 +85,14 @@ int Sprite::move() {
         if (digitalRead(RIGHT_BUTTON) == LOW && (x + xSize) < _bounds.xMax.limit) x += 2;
     }
     return 0;
+}
+
+void Sprite::reset() {
+    xSize = _initialState.xSize;
+    ySize = _initialState.ySize;
+    x = _initialState.x;
+    y = _initialState.y;
+    xDirection = _initialState.xDirection;
+    yDirection = _initialState.yDirection;
+    show = _initialState.show;
 }

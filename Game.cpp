@@ -2,13 +2,9 @@
 * @Author: AnthonyKenny98
 * @Date:   2020-11-01 09:33:55
 * @Last Modified by:   AnthonyKenny98
-* @Last Modified time: 2020-11-02 20:16:19
+* @Last Modified time: 2020-11-03 06:33:57
 */
 #include "Game.h"
-
-bool pointInSprite(int x, int y, Sprite box) {
-    return (x >= box.x && x <= box.x + box.xSize && y >= box.y && y <= box.y + box.ySize);
-}
 
 Game::Game(SCREEN screen, int animationSpeed) {
     canvasWidth = screen.getWidth();
@@ -59,4 +55,9 @@ void Game::checkCollisions() {
             }
         }
     }
+}
+
+void Game::reset() {
+    for (int i=0; i<_numSprites; i++) sprites[i].reset();
+    gameOver = false;
 }
