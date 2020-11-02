@@ -2,7 +2,7 @@
 * @Author: AnthonyKenny98
 * @Date:   2020-11-01 09:33:55
 * @Last Modified by:   AnthonyKenny98
-* @Last Modified time: 2020-11-01 20:59:13
+* @Last Modified time: 2020-11-02 20:16:19
 */
 #include "Game.h"
 
@@ -42,26 +42,20 @@ void Game::drawGameOver(SCREEN screen) {
 void Game::animate() {
     if (millis() > _timeToMove) {
         _timeToMove = millis() + _animationSpeed;
+        checkCollisions();
         for (int i=0; i<_numSprites; i++) {
             if (sprites[i].move() == 1) gameOver = true;;
         }
-        checkCollisions();
     }
 }
 
 void Game::checkCollisions() {
     for (int i=0; i<_numSprites; i++) {
-        for (int j=0; j<_numSprites; j++) {
-            if (i!=j && sprites[j].show) {
-                // // determine which edges collide
-                // if (pointInSprite(sprites[i].x, sprites[i].y, sprites[j]) ||
-                //         pointInSprite(sprites[i].x + sprites[i].xSize, sprites[i].y, sprites[j]) ||
-                //         pointInSprite(sprites[i].x + sprites[i].xSize, sprites[i].y + sprites[i].ySize, sprites[j]) ||
-                //         pointInSprite(sprites[i].x, sprites[i].y + sprites[i].ySize, sprites[j])) {
-                
-                //     sprites[i].collide();
-                // }
-                sprites[i].collide(sprites[j]);
+        if (sprites[i].show) {
+            for (int j=0; j<_numSprites; j++) {
+                if (i!=j && sprites[j].show) {
+                    sprites[i].collide(sprites[j]);
+                }
             }
         }
     }

@@ -37,7 +37,7 @@ class Sprite
     bounds_t _bounds;
 
     // Functions
-    Sprite(int moveMode = MOVE_INERTIA, int collideMode = COLLIDE_REBOUND);
+    Sprite(int moveMode = MOVE_INERTIA, int collideMode = COLLIDE_NONE);
     void draw(SCREEN screen);
     void setDefaultLimits();
     void moveLeft();

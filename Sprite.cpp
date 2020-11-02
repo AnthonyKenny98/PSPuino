@@ -35,14 +35,27 @@ void Sprite::collide(Sprite obstacle) {
     bool yCollision = false;
 
     // Determine collision
-    if (x == obstacle.x || x == obstacle.x + obstacle.xSize
-        || x + xSize == obstacle.x || x + xSize == obstacle.x + obstacle.xSize) {
-        if (y >= obstacle.y && y <= obstacle.y + obstacle.ySize) xCollision = true;
+    // if (x == obstacle.x || x == obstacle.x + obstacle.xSize
+    //     || x + xSize == obstacle.x || x + xSize == obstacle.x + obstacle.xSize) {
+    //     if (y >= obstacle.y && y <= obstacle.y + obstacle.ySize) xCollision = true;
+    // }
+    // if (y == obstacle.y || y == obstacle.y + obstacle.ySize
+    //     || y + ySize == obstacle.y || y + ySize == obstacle.y + obstacle.ySize) {
+    //     if (x >= obstacle.x && x <= obstacle.x + obstacle.xSize) yCollision = true;
+    // }
+    if ((x + xSize == obstacle.x ||
+        x == obstacle.x + obstacle.xSize) &&
+        (y + ySize >= obstacle.y &&
+        y <= obstacle.y + obstacle.ySize)) {
+        xCollision = true;
     }
-    if (y == obstacle.y || y == obstacle.y + obstacle.ySize
-        || y + ySize == obstacle.y || y + ySize == obstacle.y + obstacle.ySize) {
-        if (x >= obstacle.x && x <= obstacle.x + obstacle.xSize) yCollision = true;
+    if ((y + ySize == obstacle.y ||
+        y == obstacle.y + obstacle.ySize) &&
+        (x + xSize >= obstacle.x &&
+        x <= obstacle.x + obstacle.xSize)) {
+        yCollision = true;
     }
+
 
     // Act on collision
     if (_collideMode == COLLIDE_VANISH && (xCollision || yCollision)) {

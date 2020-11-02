@@ -4,7 +4,7 @@
 SCREEN screen(12, 11, 9, 10); // SCK = 12, MOSI = 11, CS = 10, A0 = 9
 
 // Init game
-Game game(screen, 20);
+Game game(screen, 40);
 
 // Declare Global Game Variables
 Sprite ball(MOVE_INERTIA, COLLIDE_REBOUND);
