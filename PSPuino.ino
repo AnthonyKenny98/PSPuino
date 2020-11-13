@@ -45,7 +45,6 @@ void setupBrickBreaker(int numBricks=1) {
       game.addSprite(brick);
   }
 
-
 }
 
 

@@ -2,7 +2,7 @@
 * @Author: AnthonyKenny98
 * @Date:   2020-11-01 09:33:55
 * @Last Modified by:   AnthonyKenny98
-* @Last Modified time: 2020-11-03 06:33:57
+* @Last Modified time: 2020-11-13 15:37:29
 */
 #include "Game.h"
 
@@ -18,13 +18,13 @@ void Game::addSprite(Sprite sprite) {
     // sprite.setLimits();
     sprite._bounds.xMax.limit = canvasWidth;
     sprite._bounds.yMax.limit = canvasHeight;
-    sprites[_numSprites] = sprite;
+    sprites[_numSprites] = &sprite;
     _numSprites++;
 }
 
 void Game::draw(SCREEN screen) {
     for (int i=0; i<_numSprites; i++) {
-        if (sprites[i].show) sprites[i].draw(screen);
+        if (sprites[i]->show) sprites[i]->draw(screen);
     }
 }
 
@@ -40,17 +40,17 @@ void Game::animate() {
         _timeToMove = millis() + _animationSpeed;
         checkCollisions();
         for (int i=0; i<_numSprites; i++) {
-            if (sprites[i].move() == 1) gameOver = true;;
+            if (sprites[i]->move() == 1) gameOver = true;;
         }
     }
 }
 
 void Game::checkCollisions() {
     for (int i=0; i<_numSprites; i++) {
-        if (sprites[i].show) {
+        if (sprites[i]->show) {
             for (int j=0; j<_numSprites; j++) {
-                if (i!=j && sprites[j].show) {
-                    sprites[i].collide(sprites[j]);
+                if (i!=j && sprites[j]->show) {
+                    sprites[i]->collide(*sprites[j]);
                 }
             }
         }
@@ -58,6 +58,6 @@ void Game::checkCollisions() {
 }
 
 void Game::reset() {
-    for (int i=0; i<_numSprites; i++) sprites[i].reset();
+    for (int i=0; i<_numSprites; i++) sprites[i]->reset();
     gameOver = false;
 }

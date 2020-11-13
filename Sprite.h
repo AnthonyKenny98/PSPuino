@@ -69,4 +69,11 @@ class Sprite
     state_t _initialState;
     
 };
+
+class Sprote : public Sprite 
+{
+    public:
+        int randint;
+
+};
 #endif
