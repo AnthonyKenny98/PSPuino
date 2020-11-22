@@ -31,19 +31,32 @@ void setupBrickBreaker(int numBricks=1) {
     MOVE_CONTROL,
     COLLIDE_NONE);
 
-
   game.addSprite(paddle);
   game.addSprite(ball);
 
-  for (int i=0;i<numBricks;i++) {
-    int x = random(0, game.canvasWidth);
-    int y = random(game.canvasHeight/4, game.canvasHeight);
-    Sprite brick(
-      {6,4,x,y, 0,0,true},
-      {0,false,game.canvasWidth,false,0,false,game.canvasHeight,false},
-      MOVE_INERTIA, COLLIDE_VANISH);
-      game.addSprite(brick);
-  }
+
+  Sprite brick(
+    {6,4,40,40, 0,0,true},
+    {0,false,game.canvasWidth,false,0,false,game.canvasHeight,false},
+    MOVE_INERTIA, COLLIDE_VANISH);
+  game.addSprite(brick);
+  Sprite brick1(
+    {6,4,20,20, 0,0,true},
+    {0,false,game.canvasWidth,false,0,false,game.canvasHeight,false},
+    MOVE_INERTIA, COLLIDE_VANISH);
+  game.addSprite(brick1);
+
+
+
+  // for (int i=0;i<numBricks;i++) {
+  //   int x = random(0, game.canvasWidth);
+  //   int y = random(game.canvasHeight/4, game.canvasHeight);
+  //   Sprite brick(
+  //     {6,4,x,y, 0,0,true},
+  //     {0,false,game.canvasWidth,false,0,false,game.canvasHeight,false},
+  //     MOVE_INERTIA, COLLIDE_VANISH);
+  //     game.addSprite(brick);
+  // }
 
 }
 
@@ -64,7 +77,7 @@ void setup(void) {
   pinMode(A_BUTTON, INPUT_PULLUP);
   pinMode(B_BUTTON, INPUT_PULLUP);
 
-  setupBrickBreaker(8);
+  setupBrickBreaker(2);
 }
 
 

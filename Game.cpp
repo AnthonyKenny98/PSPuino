@@ -2,7 +2,7 @@
 * @Author: AnthonyKenny98
 * @Date:   2020-11-01 09:33:55
 * @Last Modified by:   AnthonyKenny98
-* @Last Modified time: 2020-11-13 15:37:29
+* @Last Modified time: 2020-11-23 07:28:28
 */
 #include "Game.h"
 
@@ -45,6 +45,9 @@ void Game::animate() {
     }
 }
 
+// BUG -    Isssue with this algorithm. It requires sprites of type COLLISION_VANISH 
+//          to be initialised after others. Due to the "show" flag. Come back to 
+//          this
 void Game::checkCollisions() {
     for (int i=0; i<_numSprites; i++) {
         if (sprites[i]->show) {

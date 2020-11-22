@@ -15,7 +15,7 @@ class Game {
     u8g_uint_t canvasWidth;
     u8g_uint_t canvasHeight;
     Sprite* sprites[MAX_SPRITES];
-    Sprite* sprote;
+    // Sprite* sprote;
 
     Game(SCREEN screen, int animationSpeed);
     void draw(SCREEN screen);
