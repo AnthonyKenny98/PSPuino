@@ -1,6 +1,14 @@
 #include "Sprite.h"
 
-Sprite::Sprite(state_t initialState, bounds_t bounds, int moveMode, int collideMode) {
+Sprite::Sprite(state_t initialState, bounds_t bounds) {
+    
+    initSprite(initialState, bounds);
+    _collideMode = COLLIDE_NONE;
+    _moveMode = MOVE_INERTIA;
+
+}
+
+void Sprite::initSprite(state_t initialState, bounds_t bounds) {
     
     xSize = initialState.xSize;
     ySize = initialState.ySize;
@@ -11,21 +19,8 @@ Sprite::Sprite(state_t initialState, bounds_t bounds, int moveMode, int collideM
     show = initialState.show;
 
     _bounds = bounds;
-    _moveMode = moveMode;
-    _collideMode = collideMode;
     _initialState = initialState;
 }
-
-// void Sprite::setDefaultLimits() {
-//     _bounds.xMin.limit = 0;
-//     _bounds.xMax.limit = 1;
-//     _bounds.yMin.limit = 0;
-//     _bounds.yMax.limit = 1;
-//     _bounds.xMin.gameOver = false;
-//     _bounds.xMax.gameOver = false;
-//     _bounds.yMin.gameOver = false;
-//     _bounds.yMax.gameOver = false;
-// }
 
 void Sprite::draw(SCREEN screen) {
     screen.drawBox(x, y, xSize, ySize);

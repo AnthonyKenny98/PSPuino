@@ -2,17 +2,21 @@
 * @Author: AnthonyKenny98
 * @Date:   2020-11-01 09:33:55
 * @Last Modified by:   AnthonyKenny98
-* @Last Modified time: 2020-11-23 07:28:28
+* @Last Modified time: 2020-11-23 08:21:56
 */
 #include "Game.h"
 
 Game::Game(SCREEN screen, int animationSpeed) {
+    initGame(screen, animationSpeed);
+}
+
+void Game::initGame(SCREEN screen, int animationSpeed) {
     canvasWidth = screen.getWidth();
     canvasHeight = screen.getHeight();
     _numSprites = 0;
     _animationSpeed = animationSpeed;
     gameOver = false;
-}
+};
 
 void Game::addSprite(Sprite sprite) {
     // sprite.setLimits();

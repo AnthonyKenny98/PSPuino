@@ -23,8 +23,6 @@ typedef struct bounds {
     bound_t xMin, xMax, yMin, yMax;
 } bounds_t;
 
-// bounds_t defaultBounds = 
-
 typedef struct state {
     u8g_uint_t xSize;
     u8g_uint_t ySize;
@@ -34,8 +32,6 @@ typedef struct state {
     u8g_uint_t yDirection;
     bool show;
 } state_t;
-
-// state_t defaultSpriteState ;
 
 class Sprite
 {
@@ -53,27 +49,19 @@ class Sprite
     // Functions
     Sprite(
         state_t initialState={1,1,0,0,0,0,false},
-        bounds_t bounds={0,0,0,0,0,0,0,0},
-        int moveMode = MOVE_INERTIA,
-        int collideMode = COLLIDE_NONE);
+        bounds_t bounds={0,0,0,0,0,0,0,0});
     void draw(SCREEN screen);
-    void setDefaultLimits();
-    void moveLeft();
     int move();
     void collide(Sprite obstacle);
     void reset();
 
-  private:
+  protected:
     int _moveMode;
     int _collideMode;
     state_t _initialState;
+    void initSprite(state_t initialState, bounds_t bounds);
     
 };
 
-class Sprote : public Sprite 
-{
-    public:
-        int randint;
 
-};
 #endif

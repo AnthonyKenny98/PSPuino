@@ -6,7 +6,6 @@
 
 typedef U8GLIB_SH1106_128X64 SCREEN;
 
-
 //  Define Control Button Pins
 #define DOWN_BUTTON 2
 #define RIGHT_BUTTON 4
