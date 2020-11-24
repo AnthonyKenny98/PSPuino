@@ -18,7 +18,7 @@ class Game {
     Game(SCREEN screen=NULL, int animationSpeed=NULL);
     void draw(SCREEN screen);
     void drawGameOver(SCREEN screen);
-    void addSprite(Sprite sprite);
+    void addSprite(Sprite* sprite);
     void animate();
     void checkCollisions();
     void reset();

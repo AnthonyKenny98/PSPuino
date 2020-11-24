@@ -26,18 +26,18 @@ void Sprite::draw(SCREEN screen) {
     screen.drawBox(x, y, xSize, ySize);
 }
 
-void Sprite::collide(Sprite obstacle) {
+void Sprite::collide(Sprite* obstacle) {
 
     bool xCollision = false;
     bool yCollision = false;
 
     // D
-    if ((x + xSize == obstacle.x || x == obstacle.x + obstacle.xSize) && // If either x side collides with obstacle
-        (y + ySize >= obstacle.y && y <= obstacle.y + obstacle.ySize)) { // and is within y range
+    if ((x + xSize == obstacle->x || x == obstacle->x + obstacle->xSize) && // If either x side collides with obstacle
+        (y + ySize >= obstacle->y && y <= obstacle->y + obstacle->ySize)) { // and is within y range
         xCollision = true;
     }
-    if ((y + ySize == obstacle.y || y == obstacle.y + obstacle.ySize) && // If either x side collides with obstacle
-        (x + xSize >= obstacle.x && x <= obstacle.x + obstacle.xSize)) { // and is within y range
+    if ((y + ySize == obstacle->y || y == obstacle->y + obstacle->ySize) && // If either x side collides with obstacle
+        (x + xSize >= obstacle->x && x <= obstacle->x + obstacle->xSize)) { // and is within y range
         yCollision = true;
     }
 

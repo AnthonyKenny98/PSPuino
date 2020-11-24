@@ -52,7 +52,7 @@ class Sprite
         bounds_t bounds={0,0,0,0,0,0,0,0});
     void draw(SCREEN screen);
     int move();
-    void collide(Sprite obstacle);
+    virtual void collide(Sprite* obstacle);
     void reset();
 
   protected:

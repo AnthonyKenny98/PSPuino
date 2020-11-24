@@ -28,6 +28,10 @@ class Brick : public Sprite
 {
     public:
         Brick(state_t initialState, bounds_t bounds);
+        void collide(Sprite* obstacle);
+
+    private:
+        int _lives = 4;
 };
 
 #endif

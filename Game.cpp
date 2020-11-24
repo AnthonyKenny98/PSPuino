@@ -2,7 +2,7 @@
 * @Author: AnthonyKenny98
 * @Date:   2020-11-01 09:33:55
 * @Last Modified by:   AnthonyKenny98
-* @Last Modified time: 2020-11-23 08:21:56
+* @Last Modified time: 2020-11-24 19:58:17
 */
 #include "Game.h"
 
@@ -18,11 +18,8 @@ void Game::initGame(SCREEN screen, int animationSpeed) {
     gameOver = false;
 };
 
-void Game::addSprite(Sprite sprite) {
-    // sprite.setLimits();
-    sprite._bounds.xMax.limit = canvasWidth;
-    sprite._bounds.yMax.limit = canvasHeight;
-    sprites[_numSprites] = &sprite;
+void Game::addSprite(Sprite* sprite) {
+    sprites[_numSprites] = sprite;
     _numSprites++;
 }
 
@@ -57,7 +54,7 @@ void Game::checkCollisions() {
         if (sprites[i]->show) {
             for (int j=0; j<_numSprites; j++) {
                 if (i!=j && sprites[j]->show) {
-                    sprites[i]->collide(*sprites[j]);
+                    sprites[i]->collide(sprites[j]);
                 }
             }
         }
