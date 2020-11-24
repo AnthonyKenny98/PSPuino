@@ -31,7 +31,7 @@ class Brick : public Sprite
         void collide(Sprite* obstacle);
 
     private:
-        int _lives = 4;
+        int lives = 4;
 };
 
 #endif

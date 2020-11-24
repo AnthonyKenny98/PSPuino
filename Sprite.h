@@ -50,7 +50,7 @@ class Sprite
     Sprite(
         state_t initialState={1,1,0,0,0,0,false},
         bounds_t bounds={0,0,0,0,0,0,0,0});
-    void draw(SCREEN screen);
+    virtual void draw(SCREEN screen);
     int move();
     virtual void collide(Sprite* obstacle);
     void reset();

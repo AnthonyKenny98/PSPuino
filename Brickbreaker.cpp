@@ -2,7 +2,7 @@
 * @Author: AnthonyKenny98
 * @Date:   2020-11-23 07:36:14
 * @Last Modified by:   AnthonyKenny98
-* @Last Modified time: 2020-11-24 20:01:18
+* @Last Modified time: 2020-11-24 20:21:09
 */
 
 #include "Brickbreaker.h"
@@ -14,7 +14,7 @@ BrickBreaker::BrickBreaker(SCREEN screen, int animationSpeed) {
 void BrickBreaker::setup() {
     
     // Define initial states
-    state_t ballInitialState = {4,4,0,0,1,1,true};
+    state_t ballInitialState = {4,4,canvasWidth / 2 - 16 / 2,canvasHeight - 2,1,1,true};
     bounds_t ballBounds = {0,false,canvasWidth,false,0,false,canvasHeight,true};
     state_t paddleInitialState = {
         16,2,
@@ -63,8 +63,10 @@ void Brick::collide(Sprite* obstacle) {
 
     // Act on collision
     if (xCollision || yCollision) {
-        _lives += -1;
-        if (_lives <= 0) {
+        lives--;
+        xSize--;
+        ySize--;
+        if (lives <= 0) {
             xDirection = 0;
             yDirection = 0;
             show = false;
